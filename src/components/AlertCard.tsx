@@ -17,14 +17,6 @@ const iconStyles: Record<AlertTone, string> = {
   success: 'bg-emerald-300/15 text-emerald-100 ring-emerald-300/25',
 }
 
-const actionStyles: Record<AlertTone, string> = {
-  danger: 'hover:border-rose-300/45 hover:bg-rose-300/10 hover:text-white',
-  today: 'hover:border-yellow-300/45 hover:bg-yellow-300/10 hover:text-white',
-  warning: 'hover:border-amber-300/45 hover:bg-amber-300/10 hover:text-white',
-  info: 'hover:border-cyan-300/45 hover:bg-cyan-300/10 hover:text-white',
-  success: 'hover:border-emerald-300/45 hover:bg-emerald-300/10 hover:text-white',
-}
-
 const toneIcons: Record<AlertTone, typeof AlertCircle> = {
   danger: AlertCircle,
   today: AlertCircle,
@@ -35,9 +27,11 @@ const toneIcons: Record<AlertTone, typeof AlertCircle> = {
 
 type AlertCardProps = {
   alert: Alert
+  onDismiss: (alertId: string) => void
+  onReview: (alert: Alert) => void
 }
 
-export function AlertCard({ alert }: AlertCardProps) {
+export function AlertCard({ alert, onDismiss, onReview }: AlertCardProps) {
   const Icon = toneIcons[alert.tone]
 
   return (
@@ -50,15 +44,27 @@ export function AlertCard({ alert }: AlertCardProps) {
           <h3 className="text-sm font-semibold text-white">{alert.title}</h3>
           <p className="mt-1 text-sm leading-6 text-slate-300">{alert.detail}</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            {['Review', 'Mark read', 'Open'].map((action) => (
-              <button
-                className={`rounded-full border border-white/10 bg-slate-950/35 px-3 py-1.5 text-xs font-semibold text-slate-300 transition ${actionStyles[alert.tone]}`}
-                key={action}
-                type="button"
-              >
-                {action}
-              </button>
-            ))}
+            <button
+              className="rounded-full border border-white/10 bg-slate-950/35 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-cyan-300/45 hover:bg-cyan-300/10 hover:text-white"
+              type="button"
+              onClick={() => onReview(alert)}
+            >
+              Review
+            </button>
+            <button
+              className="rounded-full border border-white/10 bg-slate-950/35 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-cyan-300/45 hover:bg-cyan-300/10 hover:text-white"
+              type="button"
+              onClick={() => onReview(alert)}
+            >
+              Open
+            </button>
+            <button
+              className="rounded-full border border-white/10 bg-slate-950/35 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-emerald-300/45 hover:bg-emerald-300/10 hover:text-white"
+              type="button"
+              onClick={() => onDismiss(alert.id)}
+            >
+              Mark read
+            </button>
           </div>
         </div>
       </div>

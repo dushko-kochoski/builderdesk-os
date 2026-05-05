@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from 'react'
 import type { Project, ProjectStatus } from '../types'
 import { addDaysISO } from '../utils/dateUtils'
+import { normalizeExternalUrl } from '../utils/normalizeData'
 
 const projectStatuses: ProjectStatus[] = ['Building', 'Planning', 'Shipping', 'Paused']
 
@@ -14,11 +15,16 @@ function buildProjectLinks(value: string, projectId: string) {
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean)
-    .map((title, index) => ({
+    .map((item, index) => {
+      const [rawLabel, rawUrl = ''] = item.split('|').map((part) => part.trim())
+      const looksLikeUrl = /^https?:\/\//i.test(rawLabel) || rawLabel.includes('.')
+
+      return {
       id: `${projectId}-link-${index + 1}`,
-      title,
-      url: '#',
-    }))
+        label: looksLikeUrl ? rawLabel.replace(/^https?:\/\//i, '') : rawLabel,
+        url: normalizeExternalUrl(rawUrl || (looksLikeUrl ? rawLabel : '')),
+      }
+    })
 }
 
 export function ProjectForm({ onAddProject, onCancel }: ProjectFormProps) {
@@ -102,7 +108,7 @@ export function ProjectForm({ onAddProject, onCancel }: ProjectFormProps) {
 
       <input
         className="mt-3 h-11 w-full rounded-xl border border-white/10 bg-slate-950/50 px-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50"
-        placeholder="Links, comma separated"
+        placeholder="Links: GitHub|https://github.com/..., README"
         value={linksText}
         onChange={(event) => setLinksText(event.target.value)}
       />

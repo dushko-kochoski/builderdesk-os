@@ -11,9 +11,9 @@ export const projects: Project[] = [
     nextAction: 'Finalize usage anomaly rule builder',
     dueDate: addDaysISO(5),
     savedLinks: [
-      { id: 'acg-1', title: 'Pricing model', url: '#' },
-      { id: 'acg-2', title: 'OpenAI usage notes', url: '#' },
-      { id: 'acg-3', title: 'Launch checklist', url: '#' },
+      { id: 'acg-1', label: 'Pricing model', url: 'https://openai.com/api/pricing/' },
+      { id: 'acg-2', label: 'Usage notes', url: 'https://platform.openai.com/docs/guides/usage' },
+      { id: 'acg-3', label: 'Launch checklist', url: '' },
     ],
   },
   {
@@ -25,8 +25,8 @@ export const projects: Project[] = [
     nextAction: 'Record demo flow for enterprise reviewers',
     dueDate: addDaysISO(3),
     savedLinks: [
-      { id: 'rd-1', title: 'Demo script', url: '#' },
-      { id: 'rd-2', title: 'Risk scoring matrix', url: '#' },
+      { id: 'rd-1', label: 'Demo script', url: '' },
+      { id: 'rd-2', label: 'Risk matrix', url: '' },
     ],
   },
   {
@@ -38,8 +38,8 @@ export const projects: Project[] = [
     nextAction: 'Map indicator library into paid tiers',
     dueDate: addDaysISO(15),
     savedLinks: [
-      { id: 'tlt-1', title: 'Strategy backlog', url: '#' },
-      { id: 'tlt-2', title: 'Charting references', url: '#' },
+      { id: 'tlt-1', label: 'Strategy backlog', url: '' },
+      { id: 'tlt-2', label: 'TradingView', url: 'https://www.tradingview.com/' },
     ],
   },
   {
@@ -51,8 +51,8 @@ export const projects: Project[] = [
     nextAction: 'Connect dashboard actions to local storage',
     dueDate: addDaysISO(7),
     savedLinks: [
-      { id: 'bdo-1', title: 'MVP scope', url: '#' },
-      { id: 'bdo-2', title: 'Component map', url: '#' },
+      { id: 'bdo-1', label: 'MVP scope', url: '' },
+      { id: 'bdo-2', label: 'React docs', url: 'https://react.dev/' },
     ],
   },
   {
@@ -64,8 +64,8 @@ export const projects: Project[] = [
     nextAction: null,
     dueDate: addDaysISO(23),
     savedLinks: [
-      { id: 'gg-1', title: 'Supplier shortlist', url: '#' },
-      { id: 'gg-2', title: 'Landing page copy', url: '#' },
+      { id: 'gg-1', label: 'Supplier shortlist', url: '' },
+      { id: 'gg-2', label: 'Landing copy', url: '' },
     ],
   },
 ]
@@ -130,10 +130,10 @@ export const notes: Note[] = [
 ]
 
 export const savedLinks: SavedLink[] = [
-  { id: 'link-1', title: 'Claude prompt testing board', url: '#', project: 'BuilderDesk OS' },
-  { id: 'link-2', title: 'OpenAI pricing notes', url: '#', project: 'AI Cost Guardrails' },
-  { id: 'link-3', title: 'Stripe launch checklist', url: '#', project: 'RiskDesk AI' },
-  { id: 'link-4', title: 'Vite + Tailwind reference', url: '#', project: 'BuilderDesk OS' },
+  { id: 'link-1', title: 'React documentation', url: 'https://react.dev/', project: 'BuilderDesk OS', createdAt: todayISO() },
+  { id: 'link-2', title: 'OpenAI pricing notes', url: 'https://openai.com/api/pricing/', project: 'AI Cost Guardrails', createdAt: todayISO() },
+  { id: 'link-3', title: 'Stripe launch checklist', url: 'https://docs.stripe.com/checklist/website', project: 'RiskDesk AI', createdAt: todayISO() },
+  { id: 'link-4', title: 'Vite reference', url: 'https://vite.dev/guide/', project: 'BuilderDesk OS', createdAt: todayISO() },
 ]
 
 export const calendarEvents: CalendarEvent[] = [
@@ -141,21 +141,72 @@ export const calendarEvents: CalendarEvent[] = [
     id: 'event-1',
     title: 'RiskDesk AI demo review',
     project: 'RiskDesk AI',
-    date: 'May 6',
+    date: addDaysISO(1),
     time: '10:30',
+    type: 'Review',
+    priority: 'High',
+    notes: 'Run through the enterprise reviewer demo flow and note weak moments.',
+    completed: false,
+    createdAt: todayISO(),
   },
   {
     id: 'event-2',
     title: 'Cost Guardrails launch pass',
     project: 'AI Cost Guardrails',
-    date: 'May 8',
+    date: addDaysISO(3),
     time: '15:00',
+    type: 'Deadline',
+    priority: 'High',
+    notes: 'Final pass on launch checklist, pricing limits, and anomaly rules.',
+    completed: false,
+    createdAt: todayISO(),
   },
   {
     id: 'event-3',
     title: 'BuilderDesk MVP retrospective',
     project: 'BuilderDesk OS',
-    date: 'May 12',
+    date: addDaysISO(7),
     time: '09:00',
+    type: 'Milestone',
+    priority: 'Medium',
+    notes: 'Review local-first workflow and identify the next smallest useful phase.',
+    completed: false,
+    createdAt: todayISO(),
+  },
+  {
+    id: 'event-4',
+    title: 'TradeLabTools tier mapping reminder',
+    project: 'TradeLabTools',
+    date: addDaysISO(2),
+    time: '13:00',
+    type: 'Reminder',
+    priority: 'Medium',
+    notes: 'Map indicator library into free, pro, and research tiers.',
+    completed: false,
+    createdAt: todayISO(),
+  },
+  {
+    id: 'event-5',
+    title: 'Portfolio update sweep',
+    project: 'Portfolio',
+    date: todayISO(),
+    time: '16:00',
+    type: 'Follow-up',
+    priority: 'High',
+    notes: 'Add the latest BuilderDesk and RiskDesk progress to portfolio notes.',
+    completed: false,
+    createdAt: todayISO(),
+  },
+  {
+    id: 'event-6',
+    title: 'Review paused commerce experiment',
+    project: 'Gridion Gear',
+    date: addDaysISO(-1),
+    time: '11:00',
+    type: 'Review',
+    priority: 'Low',
+    notes: 'Decide whether to keep paused, archive, or define a small next action.',
+    completed: false,
+    createdAt: addDaysISO(-3),
   },
 ]

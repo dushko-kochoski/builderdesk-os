@@ -2,6 +2,7 @@ import { type FormEvent, useState } from 'react'
 import { ArrowUpRight, Link2, Pencil, Save, Trash2, X } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
 import { formatDateLabel } from '../utils/dateUtils'
+import { normalizeExternalUrl } from '../utils/normalizeData'
 
 const statusStyles: Record<ProjectStatus, string> = {
   Building: 'border-cyan-300/30 bg-cyan-300/10 text-cyan-100',
@@ -33,7 +34,7 @@ type ProjectCardProps = {
 const projectStatuses: ProjectStatus[] = ['Building', 'Planning', 'Shipping', 'Paused']
 
 function linksToText(project: Project) {
-  return project.savedLinks.map((link) => link.title).join(', ')
+  return project.savedLinks.map((link) => (link.url ? `${link.label}|${link.url}` : link.label)).join(', ')
 }
 
 function linksFromText(value: string, projectId: string) {
@@ -41,11 +42,16 @@ function linksFromText(value: string, projectId: string) {
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean)
-    .map((title, index) => ({
-      id: `${projectId}-link-${index + 1}-${Date.now()}`,
-      title,
-      url: '#',
-    }))
+    .map((item, index) => {
+      const [rawLabel, rawUrl = ''] = item.split('|').map((part) => part.trim())
+      const looksLikeUrl = /^https?:\/\//i.test(rawLabel) || rawLabel.includes('.')
+
+      return {
+        id: `${projectId}-link-${index + 1}-${Date.now()}`,
+        label: looksLikeUrl ? rawLabel.replace(/^https?:\/\//i, '') : rawLabel,
+        url: normalizeExternalUrl(rawUrl || (looksLikeUrl ? rawLabel : '')),
+      }
+    })
 }
 
 export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
@@ -155,7 +161,7 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
             Links
             <input
               className="h-11 w-full rounded-xl border border-white/10 bg-slate-950/50 px-3 text-sm normal-case tracking-normal text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50"
-              placeholder="Pricing model, Launch checklist"
+              placeholder="GitHub|https://github.com/..., README"
               value={linksText}
               onChange={(event) => setLinksText(event.target.value)}
             />
@@ -242,16 +248,27 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {project.savedLinks.map((link) => (
-          <a
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-white"
-            href={link.url}
-            key={link.id}
-          >
-            {link.title}
-            <ArrowUpRight className="size-3" />
-          </a>
-        ))}
+        {project.savedLinks.map((link) =>
+          link.url ? (
+            <a
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-white"
+              href={link.url}
+              key={link.id}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {link.label}
+              <ArrowUpRight className="size-3" />
+            </a>
+          ) : (
+            <span
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-xs font-medium text-slate-500"
+              key={link.id}
+            >
+              {link.label}
+            </span>
+          ),
+        )}
       </div>
 
       <div className="mt-5 flex justify-end gap-2 border-t border-white/10 pt-4">

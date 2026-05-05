@@ -6,12 +6,13 @@ import { Panel } from './Panel'
 
 type NotesPanelProps = {
   notes: Note[]
+  showForm: boolean
   onAddNote: (note: Note) => void
   onDeleteNote: (noteId: string) => void
+  onShowFormChange: (showForm: boolean) => void
 }
 
-export function NotesPanel({ notes, onAddNote, onDeleteNote }: NotesPanelProps) {
-  const [showForm, setShowForm] = useState(false)
+export function NotesPanel({ notes, showForm, onAddNote, onDeleteNote, onShowFormChange }: NotesPanelProps) {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [tag, setTag] = useState('Note')
@@ -33,7 +34,7 @@ export function NotesPanel({ notes, onAddNote, onDeleteNote }: NotesPanelProps) 
     setTitle('')
     setBody('')
     setTag('Note')
-    setShowForm(false)
+    onShowFormChange(false)
   }
 
   return (
@@ -45,7 +46,7 @@ export function NotesPanel({ notes, onAddNote, onDeleteNote }: NotesPanelProps) 
           className="flex size-9 items-center justify-center rounded-xl border border-white/10 text-slate-300 transition hover:border-cyan-300/40 hover:text-white"
           type="button"
           aria-label="Add note"
-          onClick={() => setShowForm((current) => !current)}
+          onClick={() => onShowFormChange(!showForm)}
         >
           <StickyNote className="size-4" />
         </button>
@@ -86,6 +87,13 @@ export function NotesPanel({ notes, onAddNote, onDeleteNote }: NotesPanelProps) 
         {notes.length === 0 ? (
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-6 text-slate-400">
             No notes yet. Capture quick ideas, launch thoughts, or rough prompt patterns here.
+            <button
+              className="mt-3 block rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/40"
+              type="button"
+              onClick={() => onShowFormChange(true)}
+            >
+              Add note
+            </button>
           </div>
         ) : null}
 
