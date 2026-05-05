@@ -7,6 +7,7 @@ import {
   ListTodo,
   PanelLeft,
   Search,
+  RotateCcw,
   Settings,
   Sparkles,
   StickyNote,
@@ -22,9 +23,13 @@ const navigation = [
   { label: 'Alerts', icon: Bell },
 ]
 
-export function Sidebar() {
+type SidebarProps = {
+  onResetDemoData: () => void
+}
+
+export function Sidebar({ onResetDemoData }: SidebarProps) {
   return (
-    <aside className="border-white/10 bg-slate-950/95 px-4 py-5 backdrop-blur lg:fixed lg:inset-y-0 lg:left-0 lg:w-72 lg:border-r">
+    <aside className="max-h-screen overflow-y-auto border-white/10 bg-slate-950/95 px-4 py-5 backdrop-blur lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:h-screen lg:w-72 lg:flex-col lg:border-r">
       <div className="flex items-center justify-between lg:block">
         <div className="flex items-center gap-3">
           <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-300 text-slate-950 shadow-lg shadow-cyan-500/20">
@@ -61,7 +66,21 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-8 hidden rounded-[1.35rem] border border-cyan-300/20 bg-gradient-to-b from-cyan-300/10 to-white/[0.03] p-4 shadow-xl shadow-cyan-950/20 lg:block">
+      <div className="mt-6 rounded-[1.35rem] border border-rose-300/20 bg-rose-950/20 p-4 shadow-lg shadow-rose-950/10">
+        <p className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-slate-500">Workspace</p>
+        <button
+          className="mt-3 flex w-full items-center gap-3 rounded-2xl border border-rose-300/30 bg-rose-950/35 px-3 py-3 text-left text-sm font-semibold text-rose-100 transition hover:-translate-y-0.5 hover:border-rose-300/50 hover:bg-rose-900/40"
+          type="button"
+          onClick={onResetDemoData}
+        >
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-rose-400/10 text-rose-200 ring-1 ring-rose-300/25">
+            <RotateCcw className="size-4" />
+          </span>
+          <span>Reset demo data</span>
+        </button>
+      </div>
+
+      <div className="mt-6 hidden rounded-[1.35rem] border border-cyan-300/20 bg-gradient-to-b from-cyan-300/10 to-white/[0.03] p-4 shadow-xl shadow-cyan-950/20 lg:block">
         <div className="flex items-start justify-between gap-3">
           <div className="flex size-10 items-center justify-center rounded-2xl bg-cyan-300/15 text-cyan-200">
             <Sparkles className="size-5" />
@@ -90,7 +109,7 @@ export function Sidebar() {
       </div>
 
       <a
-        className="mt-6 hidden items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white lg:flex"
+        className="mt-3 hidden items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white lg:flex"
         href="#"
       >
         <Settings className="size-4" />

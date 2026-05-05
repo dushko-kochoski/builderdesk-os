@@ -6,6 +6,13 @@ export type Priority = 'High' | 'Medium' | 'Low'
 
 export type AlertTone = 'danger' | 'today' | 'warning' | 'info' | 'success'
 
+export type SavedLink = {
+  id: string
+  title: string
+  url: string
+  project?: string
+}
+
 export type Project = {
   id: string
   name: string
@@ -23,26 +30,24 @@ export type Task = {
   project: string
   priority: Priority
   dueDate: string
+  completed: boolean
 }
 
-export type Alert = {
+export type AlertItem = {
   id: string
   title: string
   detail: string
   tone: AlertTone
 }
 
+export type Alert = AlertItem
+
 export type Note = {
   id: string
   title: string
   body: string
   tag: string
-}
-
-export type SavedLink = {
-  id: string
-  title: string
-  url: string
+  createdAt: string
 }
 
 export type CalendarEvent = {

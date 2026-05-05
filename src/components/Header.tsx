@@ -1,6 +1,10 @@
 import { Bell, CalendarDays, Plus, Search } from 'lucide-react'
 
-export function Header() {
+type HeaderProps = {
+  onNewProject: () => void
+}
+
+export function Header({ onNewProject }: HeaderProps) {
   return (
     <header className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-slate-950/75 p-5 shadow-2xl shadow-slate-950/30 backdrop-blur sm:p-7">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/50 to-transparent" />
@@ -49,6 +53,7 @@ export function Header() {
           <button
             className="flex h-12 items-center gap-2 rounded-2xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-200"
             type="button"
+            onClick={onNewProject}
           >
             <Plus className="size-4" />
             New
