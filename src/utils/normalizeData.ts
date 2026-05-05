@@ -9,7 +9,7 @@ import type {
   SavedLink,
   Task,
 } from '../types'
-import { addDaysISO, normalizeDateInput, todayISO } from './dateUtils'
+import { normalizeDateInput, todayISO } from './dateUtils'
 
 const statuses: ProjectStatus[] = ['Building', 'Planning', 'Shipping', 'Paused']
 const priorities: Priority[] = ['High', 'Medium', 'Low']
@@ -162,16 +162,4 @@ export function normalizeCalendarEvents(value: unknown, fallback: CalendarEvent[
       createdAt: normalizeDateInput(text(record.createdAt), 0),
     }
   })
-}
-
-export function emptyCalendarEvent() {
-  return {
-    id: `calendar-${Date.now()}`,
-    title: 'New reminder',
-    date: addDaysISO(1),
-    type: 'Reminder' as CalendarEventType,
-    priority: 'Medium' as Priority,
-    completed: false,
-    createdAt: todayISO(),
-  }
 }

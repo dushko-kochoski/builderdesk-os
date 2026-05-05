@@ -20,7 +20,7 @@ function buildProjectLinks(value: string, projectId: string) {
       const looksLikeUrl = /^https?:\/\//i.test(rawLabel) || rawLabel.includes('.')
 
       return {
-      id: `${projectId}-link-${index + 1}`,
+        id: `${projectId}-link-${index + 1}`,
         label: looksLikeUrl ? rawLabel.replace(/^https?:\/\//i, '') : rawLabel,
         url: normalizeExternalUrl(rawUrl || (looksLikeUrl ? rawLabel : '')),
       }
