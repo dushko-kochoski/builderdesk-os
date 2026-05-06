@@ -1,4 +1,4 @@
-import type { CalendarEvent, Note, Project, SavedLink, Task } from '../types'
+import type { CalendarEvent, Note, Project, Prompt, SavedLink, Task } from '../types'
 import { addDaysISO, todayISO } from '../utils/dateUtils'
 
 export const projects: Project[] = [
@@ -175,6 +175,81 @@ export const savedLinks: SavedLink[] = [
   { id: 'link-2', title: 'OpenAI pricing notes', url: 'https://openai.com/api/pricing/', project: 'AI Cost Guardrails', createdAt: todayISO() },
   { id: 'link-3', title: 'Stripe launch checklist', url: 'https://docs.stripe.com/checklist/website', project: 'RiskDesk AI', createdAt: todayISO() },
   { id: 'link-4', title: 'Vite reference', url: 'https://vite.dev/guide/', project: 'BuilderDesk OS', createdAt: todayISO() },
+]
+
+export const prompts: Prompt[] = [
+  {
+    id: 'prompt-codex-app-build',
+    title: 'Codex app-building sprint prompt',
+    category: 'Codex',
+    project: 'BuilderDesk OS',
+    promptText:
+      'We are inside a React + TypeScript project. Implement the requested feature locally, keep the current design, avoid backend/auth/database work, run npm run build, and report files changed plus verification.',
+    notes: 'Use when starting a focused BuilderDesk or MVP implementation pass.',
+    favorite: true,
+    createdAt: todayISO(),
+    updatedAt: todayISO(),
+  },
+  {
+    id: 'prompt-debugging-pass',
+    title: 'Debugging and QA repair prompt',
+    category: 'Debugging',
+    project: 'BuilderDesk OS',
+    promptText:
+      'Audit the current UI and code paths. Find broken interactions, fake buttons, unsafe localStorage shapes, unused imports, and TypeScript issues. Fix only reliability problems and run build/tests.',
+    notes: 'Good for stabilization passes before adding another phase.',
+    favorite: true,
+    createdAt: todayISO(),
+    updatedAt: todayISO(),
+  },
+  {
+    id: 'prompt-readme-generator',
+    title: 'Portfolio README generator',
+    category: 'README',
+    project: 'BuilderDesk OS',
+    promptText:
+      'Turn this project summary into a clean GitHub README with sections for Problem, Users, Features, Tech Stack, Local Setup, Screenshots, What I Learned, and Next Improvements.',
+    notes: 'Use with Portfolio Mode summaries.',
+    favorite: false,
+    createdAt: todayISO(),
+    updatedAt: todayISO(),
+  },
+  {
+    id: 'prompt-linkedin-portfolio-post',
+    title: 'LinkedIn portfolio launch post',
+    category: 'LinkedIn',
+    project: 'Portfolio',
+    promptText:
+      'Write a concise LinkedIn post about this project. Focus on the problem, what I built, the technical decisions, what I learned, and a soft invitation to review the demo.',
+    notes: 'Keep it professional, not hype-heavy.',
+    favorite: false,
+    createdAt: todayISO(),
+    updatedAt: todayISO(),
+  },
+  {
+    id: 'prompt-trading-strategy-analysis',
+    title: 'Trading strategy analysis prompt',
+    category: 'Trading',
+    project: 'TradeLabTools',
+    promptText:
+      'Analyze this trading strategy idea. Identify market regime assumptions, entry/exit logic, risk controls, invalidation criteria, backtest requirements, and the simplest version worth testing.',
+    notes: 'For turning rough strategy notes into testable scopes.',
+    favorite: false,
+    createdAt: todayISO(),
+    updatedAt: todayISO(),
+  },
+  {
+    id: 'prompt-newsroom-video-description',
+    title: 'Newsroom video description prompt',
+    category: 'Newsroom',
+    project: 'Portfolio',
+    promptText:
+      'Write a clear video description for this newsroom-style clip. Include a concise hook, factual summary, relevant context, neutral tone, chapters if useful, and search-friendly tags.',
+    notes: 'Use for YouTube or social video publishing workflows.',
+    favorite: false,
+    createdAt: todayISO(),
+    updatedAt: todayISO(),
+  },
 ]
 
 export const calendarEvents: CalendarEvent[] = [

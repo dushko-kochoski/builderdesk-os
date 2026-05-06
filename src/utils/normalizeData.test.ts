@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { CalendarEvent, Project, SavedLink } from '../types'
-import { normalizeCalendarEvents, normalizeProjects, normalizeSavedLinks } from './normalizeData'
+import type { CalendarEvent, Project, Prompt, SavedLink } from '../types'
+import { normalizeCalendarEvents, normalizeProjects, normalizePrompts, normalizeSavedLinks } from './normalizeData'
 
 const fallbackProject: Project = {
   id: 'fallback-project',
@@ -28,6 +28,16 @@ const fallbackEvent: CalendarEvent = {
   priority: 'Medium',
   completed: false,
   createdAt: '2026-05-05',
+}
+
+const fallbackPrompt: Prompt = {
+  id: 'fallback-prompt',
+  title: 'Fallback Prompt',
+  category: 'Codex',
+  promptText: 'Do the work carefully.',
+  favorite: false,
+  createdAt: '2026-05-05',
+  updatedAt: '2026-05-05',
 }
 
 describe('normalizeData', () => {
@@ -93,5 +103,22 @@ describe('normalizeData', () => {
       priority: 'Medium',
       completed: false,
     })
+  })
+
+  it('normalizes old prompt strings safely', () => {
+    const [prompt] = normalizePrompts(['Explain this bug'], [fallbackPrompt])
+
+    expect(prompt.title).toBe('Imported prompt 1')
+    expect(prompt.category).toBe('Other')
+    expect(prompt.promptText).toBe('Explain this bug')
+    expect(prompt.favorite).toBe(false)
+  })
+
+  it('defaults invalid prompt categories', () => {
+    const [prompt] = normalizePrompts([{ title: 'Legacy', category: 'Magic', text: 'Help me ship.' }], [fallbackPrompt])
+
+    expect(prompt.category).toBe('Other')
+    expect(prompt.promptText).toBe('Help me ship.')
+    expect(prompt.createdAt).toMatch(/^\d{4}-\d{2}-\d{2}$/)
   })
 })

@@ -9,8 +9,9 @@ export type AppView =
   | 'Calendar'
   | 'Alerts'
   | 'Portfolio'
+  | 'Prompts'
 
-export type QuickCreateTarget = 'Project' | 'Task' | 'Note' | 'Link' | 'Reminder'
+export type QuickCreateTarget = 'Project' | 'Task' | 'Note' | 'Link' | 'Reminder' | 'Prompt'
 
 export type ProjectStatus = 'Building' | 'Planning' | 'Shipping' | 'Paused'
 
@@ -22,12 +23,35 @@ export type AlertTone = 'danger' | 'today' | 'warning' | 'info' | 'success'
 
 export type CalendarEventType = 'Deadline' | 'Reminder' | 'Milestone' | 'Follow-up' | 'Review'
 
+export type PromptCategory =
+  | 'Codex'
+  | 'Debugging'
+  | 'README'
+  | 'LinkedIn'
+  | 'Planning'
+  | 'Deployment'
+  | 'Trading'
+  | 'Newsroom'
+  | 'Other'
+
 export type SavedLink = {
   id: string
   title: string
   url: string
   project?: string
   createdAt: string
+}
+
+export type Prompt = {
+  id: string
+  title: string
+  category: PromptCategory
+  project?: string
+  promptText: string
+  notes?: string
+  favorite: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 export type ProjectLink = {

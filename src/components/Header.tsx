@@ -9,7 +9,7 @@ type HeaderProps = {
   onQuickCreate: (target: QuickCreateTarget) => void
 }
 
-const quickCreateTargets: QuickCreateTarget[] = ['Project', 'Task', 'Note', 'Link', 'Reminder']
+const quickCreateTargets: QuickCreateTarget[] = ['Project', 'Task', 'Note', 'Link', 'Reminder', 'Prompt']
 
 export function Header({ searchQuery, onSearchChange, onNavigate, onQuickCreate }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)

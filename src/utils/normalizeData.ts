@@ -6,6 +6,8 @@ import type {
   Project,
   ProjectLink,
   PortfolioStatus,
+  Prompt,
+  PromptCategory,
   ProjectStatus,
   SavedLink,
   Task,
@@ -14,6 +16,17 @@ import { normalizeDateInput, todayISO } from './dateUtils'
 
 const statuses: ProjectStatus[] = ['Building', 'Planning', 'Shipping', 'Paused']
 const portfolioStatuses: PortfolioStatus[] = ['Draft', 'Ready', 'Needs work']
+const promptCategories: PromptCategory[] = [
+  'Codex',
+  'Debugging',
+  'README',
+  'LinkedIn',
+  'Planning',
+  'Deployment',
+  'Trading',
+  'Newsroom',
+  'Other',
+]
 const priorities: Priority[] = ['High', 'Medium', 'Low']
 const eventTypes: CalendarEventType[] = ['Deadline', 'Reminder', 'Milestone', 'Follow-up', 'Review']
 
@@ -198,3 +211,41 @@ export function normalizeCalendarEvents(value: unknown, fallback: CalendarEvent[
     }
   })
 }
+
+export function normalizePrompts(value: unknown, fallback: Prompt[]): Prompt[] {
+  const source = Array.isArray(value) ? value : fallback
+
+  return source.map((item, index) => {
+    if (typeof item === 'string') {
+      return {
+        id: `prompt-${index}`,
+        title: `Imported prompt ${index + 1}`,
+        category: 'Other' as PromptCategory,
+        promptText: item,
+        favorite: false,
+        createdAt: todayISO(),
+        updatedAt: todayISO(),
+      }
+    }
+
+    const record = isRecord(item) ? item : {}
+    const category = promptCategories.includes(record.category as PromptCategory)
+      ? (record.category as PromptCategory)
+      : 'Other'
+    const createdAt = normalizeDateInput(text(record.createdAt), 0)
+
+    return {
+      id: text(record.id, `prompt-${index}`),
+      title: text(record.title, `Prompt ${index + 1}`),
+      category,
+      project: text(record.project) || undefined,
+      promptText: text(record.promptText, text(record.text, '')),
+      notes: text(record.notes) || undefined,
+      favorite: Boolean(record.favorite),
+      createdAt,
+      updatedAt: normalizeDateInput(text(record.updatedAt), 0) || createdAt,
+    }
+  })
+}
+
+export { promptCategories }

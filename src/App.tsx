@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 import {
   AlertTriangle,
-  BriefcaseBusiness,
   CalendarClock,
   FolderKanban,
   ListTodo,
   Plus,
   Rocket,
+  WandSparkles,
 } from 'lucide-react'
 import { AlertCard } from './components/AlertCard'
 import { CalendarPanel } from './components/CalendarPanel'
@@ -19,28 +19,30 @@ import { Panel } from './components/Panel'
 import { PortfolioPanel } from './components/PortfolioPanel'
 import { ProjectCard } from './components/ProjectCard'
 import { ProjectForm } from './components/ProjectForm'
+import { PromptVaultPanel } from './components/PromptVaultPanel'
 import { Sidebar } from './components/Sidebar'
 import { TaskCard } from './components/TaskCard'
 import { TaskForm } from './components/TaskForm'
 import {
   calendarEvents as demoCalendarEvents,
   notes as demoNotes,
+  prompts as demoPrompts,
   projects as demoProjects,
   savedLinks as demoSavedLinks,
   tasks as demoTasks,
 } from './data/mockData'
 import { useLocalStorage } from './hooks/useLocalStorage'
-import type { Alert, AppView, CalendarEvent, Note, Project, QuickCreateTarget, SavedLink, Task } from './types'
+import type { Alert, AppView, CalendarEvent, Note, Project, Prompt, QuickCreateTarget, SavedLink, Task } from './types'
 import { buildAlerts } from './utils/alertUtils'
 import { compareToToday, isBeforeToday, isToday, isWithinNextDays } from './utils/dateUtils'
 import {
   normalizeCalendarEvents,
   normalizeNotes,
+  normalizePrompts,
   normalizeProjects,
   normalizeSavedLinks,
   normalizeTasks,
 } from './utils/normalizeData'
-import { getPortfolioReadiness } from './utils/portfolioUtils'
 
 function matchesQuery(parts: Array<string | undefined | null>, query: string) {
   const normalized = query.trim().toLowerCase()
@@ -62,6 +64,7 @@ function App() {
   const [storedTasks, setTasks] = useLocalStorage('builderdesk:tasks:v2', demoTasks)
   const [storedNotes, setNotes] = useLocalStorage('builderdesk:notes:v2', demoNotes)
   const [storedSavedLinks, setSavedLinks] = useLocalStorage('builderdesk:links:v2', demoSavedLinks)
+  const [storedPrompts, setPrompts] = useLocalStorage('builderdesk:prompts:v1', demoPrompts)
   const [storedCalendarEvents, setCalendarEvents] = useLocalStorage(
     'builderdesk:calendar-events:v1',
     demoCalendarEvents,
@@ -74,11 +77,13 @@ function App() {
   const [showNoteForm, setShowNoteForm] = useState(false)
   const [showLinkForm, setShowLinkForm] = useState(false)
   const [showCalendarForm, setShowCalendarForm] = useState(false)
+  const [showPromptForm, setShowPromptForm] = useState(false)
 
   const projects = useMemo(() => normalizeProjects(storedProjects, demoProjects), [storedProjects])
   const tasks = useMemo(() => normalizeTasks(storedTasks, demoTasks), [storedTasks])
   const notes = useMemo(() => normalizeNotes(storedNotes, demoNotes), [storedNotes])
   const savedLinks = useMemo(() => normalizeSavedLinks(storedSavedLinks, demoSavedLinks), [storedSavedLinks])
+  const prompts = useMemo(() => normalizePrompts(storedPrompts, demoPrompts), [storedPrompts])
   const calendarEvents = useMemo(
     () => normalizeCalendarEvents(storedCalendarEvents, demoCalendarEvents),
     [storedCalendarEvents],
@@ -142,6 +147,16 @@ function App() {
     () => savedLinks.filter((link) => matchesQuery([link.title, link.project, link.url], searchQuery)),
     [savedLinks, searchQuery],
   )
+  const filteredPrompts = useMemo(
+    () =>
+      prompts.filter((prompt) =>
+        matchesQuery(
+          [prompt.title, prompt.category, prompt.project, prompt.promptText, prompt.notes],
+          searchQuery,
+        ),
+      ),
+    [prompts, searchQuery],
+  )
   const filteredCalendarEvents = useMemo(
     () =>
       calendarEvents.filter((event) =>
@@ -167,8 +182,7 @@ function App() {
     const upcomingDeadlineCount =
       projects.filter((project) => project.status !== 'Paused' && isWithinNextDays(project.dueDate, 7)).length +
       openCalendarEvents.filter((event) => event.type === 'Deadline' && isWithinNextDays(event.date, 7)).length
-    const portfolioReadyCount = projects.filter((project) => getPortfolioReadiness(project).ready).length
-    const portfolioNeedsWorkCount = projects.length - portfolioReadyCount
+    const favoritePromptCount = prompts.filter((prompt) => prompt.favorite).length
 
     return [
       {
@@ -202,13 +216,13 @@ function App() {
         icon: Rocket,
       },
       {
-        label: 'Portfolio Ready',
-        value: String(portfolioReadyCount),
-        change: `${portfolioNeedsWorkCount} needs work`,
-        icon: BriefcaseBusiness,
+        label: 'Prompts',
+        value: String(prompts.length),
+        change: `${favoritePromptCount} favorites`,
+        icon: WandSparkles,
       },
     ]
-  }, [completedTasks.length, openCalendarEvents, openTasks, projects, visibleAlerts.length])
+  }, [completedTasks.length, openCalendarEvents, openTasks, projects, prompts, visibleAlerts.length])
 
   function closeForms() {
     setShowProjectForm(false)
@@ -216,6 +230,7 @@ function App() {
     setShowNoteForm(false)
     setShowLinkForm(false)
     setShowCalendarForm(false)
+    setShowPromptForm(false)
   }
 
   function navigate(view: AppView) {
@@ -228,6 +243,7 @@ function App() {
       setTasks(demoTasks)
       setNotes(demoNotes)
       setSavedLinks(demoSavedLinks)
+      setPrompts(demoPrompts)
       setCalendarEvents(demoCalendarEvents)
       setDismissedAlertIds([])
       closeForms()
@@ -276,6 +292,27 @@ function App() {
     setShowLinkForm(false)
   }
 
+  function savePrompt(prompt: Prompt) {
+    setPrompts(prompts.some((current) => current.id === prompt.id)
+      ? prompts.map((current) => (current.id === prompt.id ? prompt : current))
+      : [prompt, ...prompts])
+    setShowPromptForm(false)
+  }
+
+  function deletePrompt(promptId: string) {
+    setPrompts(prompts.filter((prompt) => prompt.id !== promptId))
+  }
+
+  function togglePromptFavorite(promptId: string) {
+    setPrompts(
+      prompts.map((prompt) =>
+        prompt.id === promptId
+          ? { ...prompt, favorite: !prompt.favorite, updatedAt: new Date().toISOString().slice(0, 10) }
+          : prompt,
+      ),
+    )
+  }
+
   function deleteLink(linkId: string) {
     setSavedLinks(savedLinks.filter((link) => link.id !== linkId))
   }
@@ -310,9 +347,12 @@ function App() {
     } else if (target === 'Link') {
       setActiveView('Links')
       setShowLinkForm(true)
-    } else {
+    } else if (target === 'Reminder') {
       setActiveView('Calendar')
       setShowCalendarForm(true)
+    } else {
+      setActiveView('Prompts')
+      setShowPromptForm(true)
     }
   }
 
@@ -490,6 +530,21 @@ function App() {
     return <PortfolioPanel projects={filteredProjects} onUpdateProject={updateProject} />
   }
 
+  function renderPromptVaultPanel() {
+    return (
+      <PromptVaultPanel
+        prompts={filteredPrompts}
+        projectNames={projectNames}
+        showForm={showPromptForm}
+        totalPromptCount={prompts.length}
+        onDeletePrompt={deletePrompt}
+        onSavePrompt={savePrompt}
+        onShowFormChange={setShowPromptForm}
+        onToggleFavorite={togglePromptFavorite}
+      />
+    )
+  }
+
   function renderMainContent() {
     if (activeView === 'Projects') return <div className="space-y-8">{renderProjectsSection()}</div>
     if (activeView === 'Tasks') return <div className="space-y-8">{renderTasksSection()}</div>
@@ -498,6 +553,7 @@ function App() {
     if (activeView === 'Calendar') return <div className="space-y-8">{renderCalendarPanel()}</div>
     if (activeView === 'Alerts') return <div className="space-y-8">{renderAlertsPanel()}</div>
     if (activeView === 'Portfolio') return <div className="space-y-8">{renderPortfolioPanel()}</div>
+    if (activeView === 'Prompts') return <div className="space-y-8">{renderPromptVaultPanel()}</div>
 
     return (
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_26rem] 2xl:grid-cols-[minmax(0,1fr)_28rem]">

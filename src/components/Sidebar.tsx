@@ -12,6 +12,7 @@ import {
   Settings,
   Sparkles,
   StickyNote,
+  WandSparkles,
 } from 'lucide-react'
 import type { AppView } from '../types'
 
@@ -24,6 +25,7 @@ const navigation = [
   { label: 'Calendar', view: 'Calendar', icon: CalendarDays },
   { label: 'Alerts', view: 'Alerts', icon: Bell },
   { label: 'Portfolio', view: 'Portfolio', icon: BriefcaseBusiness },
+  { label: 'Prompts', view: 'Prompts', icon: WandSparkles },
 ] satisfies { label: string; view: AppView; icon: typeof PanelLeft }[]
 
 const prompts = [
