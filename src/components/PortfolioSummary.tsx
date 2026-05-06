@@ -88,7 +88,7 @@ export function PortfolioSummary({ project, onUpdateProject }: PortfolioSummaryP
 
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+      <div className="rounded-2xl border border-white/[0.07] bg-white/[0.032] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200/80">Summary Preview</p>
@@ -109,7 +109,7 @@ export function PortfolioSummary({ project, onUpdateProject }: PortfolioSummaryP
           <p className="mt-3 text-sm leading-6 text-amber-100">Missing: {readiness.missingFields.join(', ')}</p>
         ) : null}
 
-        <pre className="mt-4 whitespace-pre-wrap rounded-2xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-6 text-slate-200">
+        <pre className="mt-4 whitespace-pre-wrap rounded-2xl border border-white/[0.07] bg-slate-950/55 p-4 text-sm leading-6 text-slate-200">
           {summary}
         </pre>
 
@@ -120,7 +120,7 @@ export function PortfolioSummary({ project, onUpdateProject }: PortfolioSummaryP
             ['Copy GitHub README version', generateReadmeSummary(previewProject)],
           ].map(([label, text]) => (
             <button
-              className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/40"
+              className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/20 bg-cyan-300/[0.08] px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:scale-[1.01] hover:border-cyan-300/40"
               key={label}
               type="button"
               onClick={() => void handleCopy(label, text)}
@@ -132,7 +132,10 @@ export function PortfolioSummary({ project, onUpdateProject }: PortfolioSummaryP
         </div>
       </div>
 
-      <form className="rounded-2xl border border-white/10 bg-white/[0.035] p-5" onSubmit={handleSubmit}>
+      <form
+        className="rounded-2xl border border-white/[0.07] bg-white/[0.032] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
+        onSubmit={handleSubmit}
+      >
         <div className="grid gap-3 md:grid-cols-2">
           <label className="space-y-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
             GitHub URL

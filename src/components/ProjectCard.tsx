@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from 'react'
-import { ArrowUpRight, Link2, Pencil, Save, Trash2, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, CalendarDays, Link2, Pencil, Save, Trash2, X } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
 import { formatDateLabel } from '../utils/dateUtils'
 import { normalizeExternalUrl } from '../utils/normalizeData'
@@ -203,11 +203,11 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
   }
 
   return (
-    <article className="group rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-5 transition duration-200 hover:-translate-y-1 hover:border-cyan-300/35 hover:bg-white/[0.055] hover:shadow-2xl hover:shadow-cyan-950/20 sm:p-6">
+    <article className="group rounded-[1.35rem] border border-white/[0.07] bg-white/[0.032] p-5 shadow-[0_4px_22px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-white/[0.05] sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-sm font-medium text-slate-300">{project.category}</p>
-          <h3 className="mt-1 text-2xl font-semibold tracking-tight text-white">{project.name}</h3>
+          <p className="text-sm font-medium text-slate-400">{project.category}</p>
+          <h3 className="mt-1 text-xl font-semibold tracking-tight text-slate-50">{project.name}</h3>
         </div>
         <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold ${statusStyles[project.status]}`}>
           <span className={`size-2 rounded-full shadow-[0_0_12px] ${statusDots[project.status]}`} />
@@ -217,30 +217,31 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
 
       <div className="mt-6">
         <div className="mb-2 flex items-center justify-between text-sm">
-          <span className="font-medium text-slate-300">Progress</span>
-          <span className="rounded-full border border-white/10 bg-slate-950/50 px-2.5 py-1 text-xs font-bold text-cyan-100">
+          <span className="font-medium text-slate-400">Progress</span>
+          <span className="rounded-full border border-white/[0.07] bg-white/[0.03] px-2.5 py-1 text-xs font-semibold text-slate-200">
             {project.progress}%
           </span>
         </div>
-        <div className="h-3 overflow-hidden rounded-full bg-slate-800 ring-1 ring-white/10">
+        <div className="h-1.5 overflow-hidden rounded-full bg-slate-800/90 ring-1 ring-white/[0.05]">
           <div
-            className={`h-full rounded-full bg-gradient-to-r ${progressStyles[project.status]}`}
+            className={`h-full rounded-full bg-gradient-to-r shadow-[0_0_10px_rgba(34,211,238,0.18)] transition-[width] duration-500 ease-out ${progressStyles[project.status]}`}
             style={{ width: `${project.progress}%` }}
           />
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-cyan-300/15 bg-slate-950/55 p-4 shadow-inner shadow-cyan-950/20 transition group-hover:border-cyan-300/25">
-        <p className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-cyan-200/80">Next action</p>
-        <p className={`mt-2 text-sm font-medium leading-6 ${project.nextAction ? 'text-slate-100' : 'text-amber-100'}`}>
+      <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.025] px-3 py-3">
+        <ArrowRight className="size-4 shrink-0 text-cyan-200" />
+        <p className={`min-w-0 flex-1 text-sm font-medium leading-6 ${project.nextAction ? 'text-slate-200' : 'text-amber-100'}`}>
           {project.nextAction ?? 'Needs a clear owner and next action'}
         </p>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-slate-950/35 px-2.5 py-1 text-xs font-semibold text-slate-300">
+          <CalendarDays className="size-3" />
+          {formatDateLabel(project.dueDate)}
+        </span>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm font-medium text-slate-300">
-          Due <span className="font-semibold text-slate-100">{formatDateLabel(project.dueDate)}</span>
-        </p>
         <div className="flex items-center gap-2 text-sm font-medium text-cyan-100">
           <Link2 className="size-4" />
           <span>{project.savedLinks.length} links</span>
@@ -251,7 +252,7 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         {project.savedLinks.map((link) =>
           link.url ? (
             <a
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-white"
+              className="inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-white/[0.025] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-cyan-300/30 hover:bg-cyan-300/[0.06] hover:text-white"
               href={link.url}
               key={link.id}
               rel="noreferrer"
@@ -262,7 +263,7 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
             </a>
           ) : (
             <span
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-xs font-medium text-slate-500"
+              className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.015] px-3 py-1.5 text-xs font-medium text-slate-500"
               key={link.id}
             >
               {link.label}
@@ -271,22 +272,22 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         )}
       </div>
 
-      <div className="mt-5 flex justify-end gap-2 border-t border-white/10 pt-4">
+      <div className="mt-5 flex justify-end gap-1.5 border-t border-white/[0.06] pt-4">
         <button
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-semibold text-slate-300 transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-white"
+          className="inline-flex size-9 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.025] text-slate-400 transition hover:scale-[1.02] hover:border-cyan-300/30 hover:bg-cyan-300/[0.06] hover:text-white"
           type="button"
+          aria-label={`Edit ${project.name}`}
           onClick={() => setEditing(true)}
         >
           <Pencil className="size-3.5" />
-          Edit
         </button>
         <button
-          className="inline-flex items-center gap-2 rounded-xl border border-rose-300/20 bg-rose-400/10 px-3 py-2 text-xs font-semibold text-rose-100 transition hover:border-rose-300/45 hover:bg-rose-400/15"
+          className="inline-flex size-9 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.025] text-slate-500 transition hover:scale-[1.02] hover:border-rose-300/30 hover:bg-rose-400/[0.06] hover:text-rose-100"
           type="button"
+          aria-label={`Delete ${project.name}`}
           onClick={() => onDelete(project.id)}
         >
           <Trash2 className="size-3.5" />
-          Delete
         </button>
       </div>
     </article>

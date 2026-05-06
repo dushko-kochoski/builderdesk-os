@@ -29,18 +29,18 @@ export function CalendarEventCard({ event, onToggleComplete, onDelete }: Calenda
 
   return (
     <article
-      className={`rounded-2xl border p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-white/[0.055] ${
+      className={`rounded-2xl border p-4 shadow-[0_4px_18px_rgba(0,0,0,0.12)] transition duration-200 hover:-translate-y-0.5 hover:bg-white/[0.05] ${
         event.completed
-          ? 'border-white/10 bg-slate-900/35 opacity-75'
+          ? 'border-white/[0.07] bg-slate-900/30 opacity-75'
           : overdue
-            ? 'border-rose-300/25 bg-rose-950/20'
+            ? 'border-rose-300/25 bg-rose-950/[0.12]'
             : dueToday
-              ? 'border-amber-300/25 bg-amber-950/15'
-              : 'border-white/10 bg-white/[0.035]'
+              ? 'border-amber-300/25 bg-amber-950/[0.1]'
+              : 'border-white/[0.07] bg-white/[0.032]'
       }`}
     >
       <div className="flex items-start gap-3">
-        <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/[0.04] text-cyan-200 ring-1 ring-white/10">
+        <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl bg-white/[0.035] text-cyan-200 ring-1 ring-white/[0.07]">
           <CalendarCheck2 className="size-4" />
         </div>
         <div className="min-w-0 flex-1">

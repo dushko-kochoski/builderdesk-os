@@ -43,7 +43,7 @@ export function NotesPanel({ notes, showForm, onAddNote, onDeleteNote, onShowFor
       eyebrow="Capture"
       action={
         <button
-          className="flex size-9 items-center justify-center rounded-xl border border-white/10 text-slate-300 transition hover:border-cyan-300/40 hover:text-white"
+          className="flex size-9 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025] text-slate-300 transition hover:scale-[1.01] hover:border-cyan-300/35 hover:text-white"
           type="button"
           aria-label="Add note"
           onClick={() => onShowFormChange(!showForm)}
@@ -54,7 +54,10 @@ export function NotesPanel({ notes, showForm, onAddNote, onDeleteNote, onShowFor
     >
       <div className="space-y-3">
         {showForm ? (
-          <form className="space-y-3 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4" onSubmit={handleSubmit}>
+          <form
+            className="space-y-3 rounded-2xl border border-white/[0.07] bg-[#0a1120]/80 p-4 shadow-[0_4px_20px_rgba(0,0,0,0.14)]"
+            onSubmit={handleSubmit}
+          >
             <input
               className="h-10 w-full rounded-xl border border-white/10 bg-slate-950/50 px-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50"
               placeholder="Note title"
@@ -85,7 +88,7 @@ export function NotesPanel({ notes, showForm, onAddNote, onDeleteNote, onShowFor
         ) : null}
 
         {notes.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-6 text-slate-400">
+          <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 text-sm leading-6 text-slate-400 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
             No notes yet. Capture quick ideas, launch thoughts, or rough prompt patterns here.
             <button
               className="mt-3 block rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/40"
@@ -98,7 +101,10 @@ export function NotesPanel({ notes, showForm, onAddNote, onDeleteNote, onShowFor
         ) : null}
 
         {notes.map((note) => (
-          <article className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition hover:border-cyan-300/25 hover:bg-white/[0.055]" key={note.id}>
+          <article
+            className="rounded-2xl border border-white/[0.07] bg-white/[0.032] p-4 shadow-[0_4px_18px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-white/[0.05]"
+            key={note.id}
+          >
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">{note.title}</h3>

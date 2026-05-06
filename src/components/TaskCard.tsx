@@ -21,8 +21,8 @@ export function TaskCard({ task, onToggleComplete, onDelete }: TaskCardProps) {
 
   return (
     <article
-      className={`rounded-2xl border border-white/10 p-4 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/[0.055] ${
-        task.completed ? 'bg-slate-900/35 opacity-75' : 'bg-white/[0.035]'
+      className={`rounded-2xl border border-white/[0.07] p-4 shadow-[0_4px_18px_rgba(0,0,0,0.12)] transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-white/[0.05] ${
+        task.completed ? 'bg-slate-900/30 opacity-75' : 'bg-white/[0.032]'
       }`}
     >
       <div className="flex items-start gap-3">
@@ -52,7 +52,7 @@ export function TaskCard({ task, onToggleComplete, onDelete }: TaskCardProps) {
               <Trash2 className="size-4" />
             </button>
           </div>
-          <p className="mt-1 text-sm font-medium text-slate-300">{task.project}</p>
+          <p className="mt-1 text-sm font-medium text-slate-400">{task.project}</p>
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span
               className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${priorityStyles[task.priority]}`}

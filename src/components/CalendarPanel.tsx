@@ -22,7 +22,7 @@ function sortEvents(events: CalendarEvent[]) {
 
 function EmptyGroup({ label }: { label: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-6 text-slate-400">
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 text-sm leading-6 text-slate-400 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
       No {label.toLowerCase()} reminders.
     </div>
   )
@@ -86,7 +86,7 @@ export function CalendarPanel({
       ) : null}
 
       {events.length === 0 ? (
-        <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-6 text-sm leading-6 text-slate-400">
+        <div className="rounded-[1.35rem] border border-white/[0.07] bg-white/[0.025] p-6 text-sm leading-6 text-slate-400 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
           No reminders yet. Add deadlines, follow-ups, milestones, or reviews to give the week a spine.
           <button
             className="mt-3 block rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/40"
@@ -102,11 +102,11 @@ export function CalendarPanel({
         {groups.map((group) => (
           <section key={group.label}>
             <div className="mb-3 flex items-center gap-3">
-              <div className="flex size-8 items-center justify-center rounded-xl bg-white/[0.04] text-cyan-200 ring-1 ring-white/10">
+              <div className="flex size-8 items-center justify-center rounded-xl bg-white/[0.03] text-cyan-200 ring-1 ring-white/[0.07]">
                 <CalendarPlus className="size-4" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">{group.label}</h3>
-              <div className="h-px flex-1 bg-white/10" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {group.events.length > 0 ? (
@@ -126,10 +126,10 @@ export function CalendarPanel({
         ))}
 
         {groupedEvents.completed.length > 0 ? (
-          <section className="border-t border-white/10 pt-5">
+          <section className="border-t border-white/[0.07] pt-5">
             <div className="mb-3 flex items-center gap-3">
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Completed</h3>
-              <div className="h-px flex-1 bg-white/10" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {groupedEvents.completed.map((event) => (

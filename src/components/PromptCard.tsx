@@ -12,7 +12,7 @@ type PromptCardProps = {
 
 export function PromptCard({ prompt, copied, onCopy, onDelete, onEdit, onToggleFavorite }: PromptCardProps) {
   return (
-    <article className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/[0.055]">
+    <article className="rounded-2xl border border-white/[0.07] bg-white/[0.032] p-4 shadow-[0_4px_18px_rgba(0,0,0,0.12)] transition hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-white/[0.05]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -30,7 +30,7 @@ export function PromptCard({ prompt, copied, onCopy, onDelete, onEdit, onToggleF
         <button
           className={`rounded-xl p-2 transition ${
             prompt.favorite
-              ? 'bg-amber-300/10 text-amber-100 ring-1 ring-amber-300/25'
+              ? 'bg-amber-300/[0.08] text-amber-100 ring-1 ring-amber-300/20'
               : 'text-slate-500 hover:bg-amber-300/10 hover:text-amber-100'
           }`}
           type="button"

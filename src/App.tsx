@@ -574,7 +574,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#050814] text-slate-200">
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.1),transparent_30%),linear-gradient(135deg,#050814_0%,#0b1224_48%,#06111f_100%)]" />
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.09),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.06),transparent_28%),linear-gradient(135deg,#050814_0%,#080e1a_48%,#050b15_100%)]" />
       <Sidebar
         activeView={activeView}
         onNavigate={navigate}

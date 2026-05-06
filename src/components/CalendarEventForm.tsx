@@ -42,7 +42,10 @@ export function CalendarEventForm({ projectNames, onAddEvent, onCancel }: Calend
   }
 
   return (
-    <form className="mb-5 rounded-[1.35rem] border border-cyan-300/20 bg-cyan-300/10 p-4 sm:p-5" onSubmit={handleSubmit}>
+    <form
+      className="mb-5 rounded-[1.35rem] border border-white/[0.07] bg-[#0a1120]/80 p-4 shadow-[0_4px_20px_rgba(0,0,0,0.14)] sm:p-5"
+      onSubmit={handleSubmit}
+    >
       <div className="grid gap-3 md:grid-cols-2">
         <input
           className="h-11 rounded-xl border border-white/10 bg-slate-950/50 px-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50"

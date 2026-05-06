@@ -37,28 +37,28 @@ export function PortfolioPanel({ projects, onUpdateProject }: PortfolioPanelProp
       }
     >
       <div className="mb-5 grid gap-3 md:grid-cols-3">
-        <div className="rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4">
+        <div className="rounded-2xl border border-white/[0.07] border-t-emerald-300/35 bg-white/[0.032] p-4 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
           <div className="flex items-center gap-2 text-emerald-100">
             <CheckCircle2 className="size-4" />
             <p className="text-sm font-semibold">Portfolio Ready</p>
           </div>
           <p className="mt-2 text-3xl font-semibold text-white">{readyCount}</p>
         </div>
-        <div className="rounded-2xl border border-amber-300/20 bg-amber-300/10 p-4">
+        <div className="rounded-2xl border border-white/[0.07] border-t-amber-300/35 bg-white/[0.032] p-4 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
           <div className="flex items-center gap-2 text-amber-100">
             <TriangleAlert className="size-4" />
             <p className="text-sm font-semibold">Needs Work</p>
           </div>
           <p className="mt-2 text-3xl font-semibold text-white">{needsWorkCount}</p>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+        <div className="rounded-2xl border border-white/[0.07] bg-white/[0.032] p-4 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
           <p className="text-sm font-semibold text-slate-300">Tracked Projects</p>
           <p className="mt-2 text-3xl font-semibold text-white">{projects.length}</p>
         </div>
       </div>
 
       {projects.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-sm leading-6 text-slate-400">
+        <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5 text-sm leading-6 text-slate-400 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
           No projects available yet. Add projects first, then return here to prepare portfolio summaries.
         </div>
       ) : null}

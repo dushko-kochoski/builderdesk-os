@@ -99,7 +99,7 @@ export function PromptVaultPanel({
           className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition ${
             favoritesOnly
               ? 'border-amber-300/30 bg-amber-300/10 text-amber-100'
-              : 'border-white/10 bg-white/[0.04] text-slate-300 hover:border-amber-300/30 hover:text-white'
+              : 'border-white/[0.07] bg-white/[0.03] text-slate-300 hover:border-amber-300/30 hover:text-white'
           }`}
           type="button"
           onClick={() => setFavoritesOnly((current) => !current)}
@@ -122,7 +122,7 @@ export function PromptVaultPanel({
       ) : null}
 
       {totalPromptCount === 0 ? (
-        <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-6 text-sm leading-6 text-slate-400">
+        <div className="rounded-[1.35rem] border border-white/[0.07] bg-white/[0.025] p-6 text-sm leading-6 text-slate-400 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
           No prompts saved yet. Add your first reusable Codex or ChatGPT prompt.
           <button
             className="mt-3 block rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/40"
@@ -135,7 +135,7 @@ export function PromptVaultPanel({
       ) : null}
 
       {visiblePrompts.length === 0 && totalPromptCount > 0 ? (
-        <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-6 text-sm leading-6 text-slate-400">
+        <div className="rounded-[1.35rem] border border-white/[0.07] bg-white/[0.025] p-6 text-sm leading-6 text-slate-400 shadow-[0_4px_18px_rgba(0,0,0,0.1)]">
           No prompts match the current filters.
         </div>
       ) : null}

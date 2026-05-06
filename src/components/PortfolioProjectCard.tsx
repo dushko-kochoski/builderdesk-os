@@ -14,10 +14,10 @@ export function PortfolioProjectCard({ project, selected, onSelect }: PortfolioP
 
   return (
     <button
-      className={`w-full rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 ${
+      className={`w-full rounded-2xl border p-4 text-left shadow-[0_4px_18px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:scale-[1.005] ${
         selected
-          ? 'border-cyan-300/40 bg-cyan-300/10 shadow-xl shadow-cyan-950/20'
-          : 'border-white/10 bg-white/[0.035] hover:border-cyan-300/25 hover:bg-white/[0.055]'
+          ? 'border-cyan-300/35 bg-cyan-300/[0.055] shadow-[0_6px_24px_rgba(8,145,178,0.12)]'
+          : 'border-white/[0.07] bg-white/[0.032] hover:border-cyan-300/25 hover:bg-white/[0.05]'
       }`}
       type="button"
       onClick={() => onSelect(project.id)}
