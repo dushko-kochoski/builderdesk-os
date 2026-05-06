@@ -1,73 +1,106 @@
-# React + TypeScript + Vite
+# BuilderDesk OS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+"A local-first command center for builders managing projects, tasks, notes, links, reminders, prompts, and portfolio summaries."
 
-Currently, two official plugins are available:
+BuilderDesk OS is a polished frontend MVP for people building several software, AI, product, or portfolio projects at once. It brings the scattered pieces of a builder workflow into one local dashboard: project status, next actions, tasks, saved links, notes, reminders, prompt templates, alerts, and portfolio-ready summaries.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Overview
 
-## React Compiler
+Builders often track work across too many places: GitHub repos, deployment links, sticky notes, calendar reminders, AI prompts, README drafts, portfolio notes, and launch tasks. BuilderDesk OS solves that problem by acting as a calm local command center where those pieces can be managed together without a backend or account system.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The app is intentionally local-first. Demo data loads on first use, user changes persist in browser `localStorage`, and the workspace can be reset back to the demo state at any time.
 
-## Expanding the ESLint configuration
+## Key Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Project dashboard with status, progress, next action, due date, and project links.
+- Local-first project, task, note, and saved link management.
+- Calendar and reminder system for deadlines, milestones, follow-ups, and reviews.
+- Dynamic alerts and attention panel for overdue items, due-today work, paused projects, missing next actions, and upcoming deadlines.
+- Portfolio Mode for readiness checks and generated project summaries.
+- Prompt Vault for reusable AI, Codex, ChatGPT, debugging, README, LinkedIn, planning, trading, and deployment prompts.
+- Header search and quick-create menu for fast navigation and capture.
+- `localStorage` persistence with safe data normalization.
+- Reset demo data action for portfolio demos and clean restarts.
+- Utility tests with Vitest.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- lucide-react
+- Vitest
+- Browser `localStorage`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Screenshots
+
+> Screenshot placeholders are included for portfolio publishing. Add actual images before sharing the final project page.
+
+![Dashboard](screenshots/dashboard.png)
+
+![Portfolio Mode](screenshots/portfolio-mode.png)
+
+![Prompt Vault](screenshots/prompt-vault.png)
+
+## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start the local development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+Run tests:
+
+```bash
+npm run test -- --run
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```text
+src/
+  components/  Reusable UI panels, cards, forms, dashboard sections, and feature views.
+  data/        Demo/mock data used on first load and when resetting the workspace.
+  hooks/       Local React hooks, including localStorage persistence.
+  utils/       Date helpers, alert generation, data normalization, portfolio logic, and prompt filtering.
+```
+
+## Deployment Notes
+
+BuilderDesk OS is ready for a standard Vite deployment.
+
+For Vercel:
+
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
+
+No custom `vercel.json` is required for the current local-first MVP.
+
+## Why I Built This
+
+BuilderDesk OS was built to organize multiple AI, product, and software projects in one place. Instead of spreading project links, reminders, tasks, prompts, and portfolio notes across separate tools, the app gives builders a focused workspace for daily execution and portfolio preparation.
+
+## Portfolio Note
+
+This is a frontend, local-first MVP designed as a polished productivity tool and portfolio project. It demonstrates React state management, TypeScript modeling, local persistence, UI composition, utility testing, and a practical builder-focused product concept without relying on a backend, database, authentication, or routing.
