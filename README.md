@@ -37,11 +37,11 @@ The app is intentionally local-first. Demo data loads on first use, user changes
 
 > Screenshot placeholders are included for portfolio publishing. Add actual images before sharing the final project page.
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](./screenshots/dashboard.png)
 
-![Portfolio Mode](screenshots/portfolio-mode.png)
+![Portfolio Mode](./screenshots/portfolio-mode.png)
 
-![Prompt Vault](screenshots/prompt-vault.png)
+![Prompt Vault](./screenshots/prompt-vault.png)
 
 ## Getting Started
 
