@@ -5,6 +5,7 @@ import type {
   Priority,
   Project,
   ProjectLink,
+  PortfolioStatus,
   ProjectStatus,
   SavedLink,
   Task,
@@ -12,6 +13,7 @@ import type {
 import { normalizeDateInput, todayISO } from './dateUtils'
 
 const statuses: ProjectStatus[] = ['Building', 'Planning', 'Shipping', 'Paused']
+const portfolioStatuses: PortfolioStatus[] = ['Draft', 'Ready', 'Needs work']
 const priorities: Priority[] = ['High', 'Medium', 'Low']
 const eventTypes: CalendarEventType[] = ['Deadline', 'Reminder', 'Milestone', 'Follow-up', 'Review']
 
@@ -34,6 +36,17 @@ export function normalizeExternalUrl(value: string) {
   return normalizeUrl(value)
 }
 
+function textList(value: unknown) {
+  if (Array.isArray(value)) {
+    return value.map((item) => text(item).trim()).filter(Boolean)
+  }
+
+  return text(value)
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean)
+}
+
 function normalizeProjectLink(value: unknown, index: number): ProjectLink {
   if (typeof value === 'string') {
     return { id: `project-link-${index}`, label: value, url: '' }
@@ -50,6 +63,10 @@ function normalizeProjectLink(value: unknown, index: number): ProjectLink {
   return { id: `project-link-${index}`, label: `Link ${index + 1}`, url: '' }
 }
 
+function findProjectLinkUrl(links: ProjectLink[], patterns: RegExp[]) {
+  return links.find((link) => link.url && patterns.some((pattern) => pattern.test(link.label)))?.url
+}
+
 export function normalizeProjects(value: unknown, fallback: Project[]): Project[] {
   const source = Array.isArray(value) ? value : fallback
 
@@ -59,6 +76,15 @@ export function normalizeProjects(value: unknown, fallback: Project[]): Project[
       ? (record.status as ProjectStatus)
       : 'Planning'
 
+    const savedLinks = (Array.isArray(record.savedLinks) ? record.savedLinks : []).map(normalizeProjectLink)
+    const githubUrl = normalizeUrl(record.githubUrl) || findProjectLinkUrl(savedLinks, [/github/i])
+    const liveDemoUrl =
+      normalizeUrl(record.liveDemoUrl) ||
+      findProjectLinkUrl(savedLinks, [/live/i, /demo/i, /vercel/i, /render/i, /netlify/i])
+    const portfolioStatus = portfolioStatuses.includes(record.portfolioStatus as PortfolioStatus)
+      ? (record.portfolioStatus as PortfolioStatus)
+      : 'Draft'
+
     return {
       id: text(record.id, `project-${index}`),
       name: text(record.name, 'Untitled project'),
@@ -67,7 +93,16 @@ export function normalizeProjects(value: unknown, fallback: Project[]): Project[
       progress: Math.min(100, Math.max(0, Number(record.progress) || 0)),
       nextAction: text(record.nextAction).trim() || null,
       dueDate: normalizeDateInput(text(record.dueDate), 7),
-      savedLinks: (Array.isArray(record.savedLinks) ? record.savedLinks : []).map(normalizeProjectLink),
+      savedLinks,
+      problemSolved: text(record.problemSolved) || undefined,
+      targetUsers: text(record.targetUsers) || undefined,
+      keyFeatures: textList(record.keyFeatures),
+      techStack: textList(record.techStack),
+      liveDemoUrl: liveDemoUrl || undefined,
+      githubUrl: githubUrl || undefined,
+      portfolioStatus,
+      whatILearned: text(record.whatILearned) || undefined,
+      nextImprovement: text(record.nextImprovement) || undefined,
     }
   })
 }

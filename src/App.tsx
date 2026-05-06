@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 import {
   AlertTriangle,
+  BriefcaseBusiness,
   CalendarClock,
   FolderKanban,
-  Link2,
   ListTodo,
   Plus,
   Rocket,
@@ -16,6 +16,7 @@ import { LinksPanel } from './components/LinksPanel'
 import { MetricCard } from './components/MetricCard'
 import { NotesPanel } from './components/NotesPanel'
 import { Panel } from './components/Panel'
+import { PortfolioPanel } from './components/PortfolioPanel'
 import { ProjectCard } from './components/ProjectCard'
 import { ProjectForm } from './components/ProjectForm'
 import { Sidebar } from './components/Sidebar'
@@ -39,6 +40,7 @@ import {
   normalizeSavedLinks,
   normalizeTasks,
 } from './utils/normalizeData'
+import { getPortfolioReadiness } from './utils/portfolioUtils'
 
 function matchesQuery(parts: Array<string | undefined | null>, query: string) {
   const normalized = query.trim().toLowerCase()
@@ -112,6 +114,12 @@ function App() {
             project.category,
             project.status,
             project.nextAction,
+            project.problemSolved,
+            project.targetUsers,
+            project.whatILearned,
+            project.nextImprovement,
+            ...(project.keyFeatures ?? []),
+            ...(project.techStack ?? []),
             ...project.savedLinks.map((link) => link.label),
           ],
           searchQuery,
@@ -159,6 +167,8 @@ function App() {
     const upcomingDeadlineCount =
       projects.filter((project) => project.status !== 'Paused' && isWithinNextDays(project.dueDate, 7)).length +
       openCalendarEvents.filter((event) => event.type === 'Deadline' && isWithinNextDays(event.date, 7)).length
+    const portfolioReadyCount = projects.filter((project) => getPortfolioReadiness(project).ready).length
+    const portfolioNeedsWorkCount = projects.length - portfolioReadyCount
 
     return [
       {
@@ -192,10 +202,10 @@ function App() {
         icon: Rocket,
       },
       {
-        label: 'Reminders',
-        value: String(openCalendarEvents.length),
-        change: `${calendarDueTodayCount} due today`,
-        icon: Link2,
+        label: 'Portfolio Ready',
+        value: String(portfolioReadyCount),
+        change: `${portfolioNeedsWorkCount} needs work`,
+        icon: BriefcaseBusiness,
       },
     ]
   }, [completedTasks.length, openCalendarEvents, openTasks, projects, visibleAlerts.length])
@@ -476,6 +486,10 @@ function App() {
     )
   }
 
+  function renderPortfolioPanel() {
+    return <PortfolioPanel projects={filteredProjects} onUpdateProject={updateProject} />
+  }
+
   function renderMainContent() {
     if (activeView === 'Projects') return <div className="space-y-8">{renderProjectsSection()}</div>
     if (activeView === 'Tasks') return <div className="space-y-8">{renderTasksSection()}</div>
@@ -483,6 +497,7 @@ function App() {
     if (activeView === 'Links') return <div className="space-y-8">{renderLinksPanel()}</div>
     if (activeView === 'Calendar') return <div className="space-y-8">{renderCalendarPanel()}</div>
     if (activeView === 'Alerts') return <div className="space-y-8">{renderAlertsPanel()}</div>
+    if (activeView === 'Portfolio') return <div className="space-y-8">{renderPortfolioPanel()}</div>
 
     return (
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_26rem] 2xl:grid-cols-[minmax(0,1fr)_28rem]">
@@ -531,7 +546,7 @@ function App() {
           </section>
           {searchQuery ? (
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-4 py-3 text-sm font-medium text-cyan-100">
-              <span>Filtering for “{searchQuery}”</span>
+              <span>Filtering for "{searchQuery}"</span>
               <button
                 className="rounded-xl border border-cyan-300/20 bg-slate-950/35 px-3 py-1.5 text-xs font-semibold transition hover:border-cyan-300/40"
                 type="button"

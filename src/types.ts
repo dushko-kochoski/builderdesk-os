@@ -1,10 +1,20 @@
 import type { LucideIcon } from 'lucide-react'
 
-export type AppView = 'Dashboard' | 'Projects' | 'Tasks' | 'Notes' | 'Links' | 'Calendar' | 'Alerts'
+export type AppView =
+  | 'Dashboard'
+  | 'Projects'
+  | 'Tasks'
+  | 'Notes'
+  | 'Links'
+  | 'Calendar'
+  | 'Alerts'
+  | 'Portfolio'
 
 export type QuickCreateTarget = 'Project' | 'Task' | 'Note' | 'Link' | 'Reminder'
 
 export type ProjectStatus = 'Building' | 'Planning' | 'Shipping' | 'Paused'
+
+export type PortfolioStatus = 'Draft' | 'Ready' | 'Needs work'
 
 export type Priority = 'High' | 'Medium' | 'Low'
 
@@ -35,6 +45,15 @@ export type Project = {
   nextAction: string | null
   dueDate: string
   savedLinks: ProjectLink[]
+  problemSolved?: string
+  targetUsers?: string
+  keyFeatures?: string[]
+  techStack?: string[]
+  liveDemoUrl?: string
+  githubUrl?: string
+  portfolioStatus?: PortfolioStatus
+  whatILearned?: string
+  nextImprovement?: string
 }
 
 export type Task = {

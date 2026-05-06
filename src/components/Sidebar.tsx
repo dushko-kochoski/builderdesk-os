@@ -1,5 +1,6 @@
 import {
   Bell,
+  BriefcaseBusiness,
   CalendarDays,
   Command,
   FolderKanban,
@@ -22,12 +23,13 @@ const navigation = [
   { label: 'Links', view: 'Links', icon: Link2 },
   { label: 'Calendar', view: 'Calendar', icon: CalendarDays },
   { label: 'Alerts', view: 'Alerts', icon: Bell },
+  { label: 'Portfolio', view: 'Portfolio', icon: BriefcaseBusiness },
 ] satisfies { label: string; view: AppView; icon: typeof PanelLeft }[]
 
 const prompts = [
   { label: 'What needs attention today?', view: 'Alerts', search: '' },
   { label: 'Show paused projects', view: 'Projects', search: 'paused' },
-  { label: 'Prepare portfolio summary', view: 'Calendar', search: 'portfolio' },
+  { label: 'Prepare portfolio summary', view: 'Portfolio', search: '' },
 ] satisfies { label: string; view: AppView; search: string }[]
 
 type SidebarProps = {

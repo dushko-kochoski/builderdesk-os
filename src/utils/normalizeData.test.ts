@@ -56,6 +56,27 @@ describe('normalizeData', () => {
     expect(project.category).toBe('Project')
     expect(project.status).toBe('Planning')
     expect(project.savedLinks).toEqual([])
+    expect(project.portfolioStatus).toBe('Draft')
+    expect(project.keyFeatures).toEqual([])
+    expect(project.techStack).toEqual([])
+  })
+
+  it('infers portfolio URLs from existing project links', () => {
+    const [project] = normalizeProjects(
+      [
+        {
+          name: 'Portfolio Project',
+          savedLinks: [
+            { label: 'GitHub', url: 'github.com/example/repo' },
+            { label: 'Live Demo', url: 'builderdesk.example.com' },
+          ],
+        },
+      ],
+      [fallbackProject],
+    )
+
+    expect(project.githubUrl).toBe('https://github.com/example/repo')
+    expect(project.liveDemoUrl).toBe('https://builderdesk.example.com')
   })
 
   it('does not crash on invalid calendar data', () => {
