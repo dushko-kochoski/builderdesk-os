@@ -183,42 +183,48 @@ function App() {
       projects.filter((project) => project.status !== 'Paused' && isWithinNextDays(project.dueDate, 7)).length +
       openCalendarEvents.filter((event) => event.type === 'Deadline' && isWithinNextDays(event.date, 7)).length
     const favoritePromptCount = prompts.filter((prompt) => prompt.favorite).length
+    const alertOverdueCount = visibleAlerts.filter((alert) => alert.tone === 'danger').length
 
     return [
       {
         label: 'Active projects',
         value: String(activeProjects.length),
-        change: `${pausedProjects} paused`,
+        change: pausedProjects === 1 ? '1 paused' : `${pausedProjects} paused`,
         icon: FolderKanban,
       },
       {
         label: 'Open tasks',
         value: String(openTasks.length),
-        change: `${completedTasks.length} completed`,
+        change: completedTasks.length === 1 ? '1 completed' : `${completedTasks.length} completed`,
         icon: ListTodo,
       },
       {
         label: 'Due today',
         value: String(dueTodayCount),
-        change: overdueCount > 0 ? `${overdueCount} high-priority overdue` : 'tasks + reminders',
+        change: overdueCount > 0 ? `${overdueCount} overdue` : `${calendarDueTodayCount} reminders today`,
         icon: CalendarClock,
       },
       {
         label: 'Alert load',
         value: String(visibleAlerts.length),
-        change: visibleAlerts.length > 0 ? 'needs review' : 'all clear',
+        change:
+          alertOverdueCount > 0
+            ? `${alertOverdueCount} overdue alerts`
+            : visibleAlerts.length > 0
+              ? `${visibleAlerts.length} needs review`
+              : 'all clear',
         icon: AlertTriangle,
       },
       {
         label: 'Launch runway',
         value: String(upcomingDeadlineCount),
-        change: 'deadlines in 7 days',
+        change: `${upcomingDeadlineCount} deadlines in 7 days`,
         icon: Rocket,
       },
       {
         label: 'Prompts',
         value: String(prompts.length),
-        change: `${favoritePromptCount} favorites`,
+        change: favoritePromptCount === 1 ? '1 favorite' : `${favoritePromptCount} favorites`,
         icon: WandSparkles,
       },
     ]
@@ -589,7 +595,7 @@ function App() {
             onQuickCreate={handleQuickCreate}
             onSearchChange={setSearchQuery}
           />
-          <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
+          <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {metrics.map((metric) => (
               <MetricCard
                 change={metric.change}

@@ -64,33 +64,33 @@ export function Sidebar({ activeView, onNavigate, onPromptSearch, onResetDemoDat
         </button>
       </div>
 
-      <nav className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-1">
+      <nav className="mt-8 grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:grid-cols-1">
         {navigation.map((item) => {
           const Icon = item.icon
           const active = item.view === activeView
 
           return (
             <button
-              className={`relative flex items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-medium transition ${
+              className={`relative flex items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium transition-all duration-200 ${
                 active
-                  ? 'bg-cyan-300/[0.08] text-cyan-50 ring-1 ring-cyan-300/20 before:absolute before:left-0 before:top-1/2 before:h-6 before:w-px before:-translate-y-1/2 before:rounded-full before:bg-cyan-300'
-                  : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                  ? 'bg-cyan-300/[0.06] text-cyan-50 ring-1 ring-cyan-300/15 before:absolute before:left-0 before:top-1/2 before:h-6 before:w-[2px] before:-translate-y-1/2 before:rounded-full before:bg-cyan-300'
+                  : 'text-slate-400 hover:bg-white/[0.045] hover:text-white'
               }`}
               key={item.label}
               type="button"
               onClick={() => onNavigate(item.view)}
             >
-              <Icon className="size-4" />
+              <Icon className={`size-4 transition ${active ? 'text-cyan-200 drop-shadow-[0_0_5px_rgba(34,211,238,0.24)]' : ''}`} />
               <span>{item.label}</span>
             </button>
           )
         })}
       </nav>
 
-      <div className="mt-6 rounded-2xl border border-white/[0.06] bg-white/[0.025] p-3">
+      <div className="mt-6 rounded-xl border border-white/[0.055] bg-white/[0.02] p-3">
         <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-slate-500">Workspace</p>
         <button
-          className="mt-2 flex w-full items-center gap-2 rounded-xl border border-rose-300/15 bg-rose-400/[0.04] px-2.5 py-2 text-left text-xs font-semibold text-rose-200/90 transition hover:border-rose-300/30 hover:bg-rose-400/[0.07] hover:text-rose-100"
+          className="mt-2 flex w-full items-center gap-2 rounded-xl border border-rose-300/[0.12] bg-rose-400/[0.025] px-2.5 py-2 text-left text-xs font-semibold text-rose-200/80 transition-all duration-200 hover:border-rose-300/25 hover:bg-rose-400/[0.05] hover:text-rose-100"
           type="button"
           onClick={onResetDemoData}
         >

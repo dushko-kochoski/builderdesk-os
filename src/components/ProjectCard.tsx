@@ -1,21 +1,21 @@
 import { type FormEvent, useState } from 'react'
-import { ArrowRight, ArrowUpRight, CalendarDays, Link2, Pencil, Save, Trash2, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, CalendarDays, Link2, Pause, Pencil, Rocket, Save, Sparkles, Trash2, X } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
 import { formatDateLabel } from '../utils/dateUtils'
 import { normalizeExternalUrl } from '../utils/normalizeData'
 
 const statusStyles: Record<ProjectStatus, string> = {
-  Building: 'border-cyan-300/30 bg-cyan-300/10 text-cyan-100',
-  Planning: 'border-blue-300/30 bg-blue-300/10 text-blue-100',
-  Shipping: 'border-emerald-300/30 bg-emerald-300/10 text-emerald-100',
-  Paused: 'border-amber-300/30 bg-amber-300/10 text-amber-100',
+  Building: 'border-cyan-300/25 bg-gradient-to-r from-cyan-300/[0.12] to-blue-400/[0.06] text-cyan-100',
+  Planning: 'border-blue-300/25 bg-gradient-to-r from-blue-300/[0.12] to-cyan-400/[0.05] text-blue-100',
+  Shipping: 'border-emerald-300/25 bg-gradient-to-r from-emerald-300/[0.12] to-violet-400/[0.06] text-emerald-100',
+  Paused: 'border-amber-300/25 bg-gradient-to-r from-amber-300/[0.12] to-slate-300/[0.05] text-amber-100',
 }
 
-const statusDots: Record<ProjectStatus, string> = {
-  Building: 'bg-cyan-300 shadow-cyan-300/40',
-  Planning: 'bg-blue-300 shadow-blue-300/40',
-  Shipping: 'bg-emerald-300 shadow-emerald-300/40',
-  Paused: 'bg-amber-300 shadow-amber-300/40',
+const statusIcons: Record<ProjectStatus, typeof Sparkles> = {
+  Building: Sparkles,
+  Planning: CalendarDays,
+  Shipping: Rocket,
+  Paused: Pause,
 }
 
 const progressStyles: Record<ProjectStatus, string> = {
@@ -63,6 +63,8 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
   const [nextAction, setNextAction] = useState(project.nextAction ?? '')
   const [dueDate, setDueDate] = useState(project.dueDate)
   const [linksText, setLinksText] = useState(linksToText(project))
+  const StatusIcon = statusIcons[project.status]
+  const highProgress = project.progress > 70
 
   function resetForm() {
     setName(project.name)
@@ -203,14 +205,14 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
   }
 
   return (
-    <article className="group rounded-[1.35rem] border border-white/[0.07] bg-white/[0.032] p-5 shadow-[0_4px_22px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-white/[0.05] sm:p-6">
+    <article className="group rounded-[1.25rem] border border-white/[0.07] bg-white/[0.032] p-5 shadow-[0_4px_22px_rgba(0,0,0,0.16)] transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-white/[0.05] sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-sm font-medium text-slate-400">{project.category}</p>
           <h3 className="mt-1 text-xl font-semibold tracking-tight text-slate-50">{project.name}</h3>
         </div>
-        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold ${statusStyles[project.status]}`}>
-          <span className={`size-2 rounded-full shadow-[0_0_12px] ${statusDots[project.status]}`} />
+        <span className={`inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-semibold ${statusStyles[project.status]}`}>
+          <StatusIcon className="size-3.5" />
           {project.status}
         </span>
       </div>
@@ -224,15 +226,15 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-slate-800/90 ring-1 ring-white/[0.05]">
           <div
-            className={`h-full rounded-full bg-gradient-to-r shadow-[0_0_10px_rgba(34,211,238,0.18)] transition-[width] duration-500 ease-out ${progressStyles[project.status]}`}
+            className={`h-full rounded-full bg-gradient-to-r transition-[width,box-shadow] duration-500 ease-out group-hover:shadow-[0_0_10px_rgba(34,211,238,0.2)] ${highProgress ? 'shadow-[0_0_10px_rgba(34,211,238,0.18)]' : ''} ${progressStyles[project.status]}`}
             style={{ width: `${project.progress}%` }}
           />
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.025] px-3 py-3">
+      <div className="mt-5 flex flex-wrap items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3 py-3">
         <ArrowRight className="size-4 shrink-0 text-cyan-200" />
-        <p className={`min-w-0 flex-1 text-sm font-medium leading-6 ${project.nextAction ? 'text-slate-200' : 'text-amber-100'}`}>
+        <p className={`min-w-0 flex-1 text-sm font-semibold leading-6 ${project.nextAction ? 'text-slate-100' : 'text-amber-100'}`}>
           {project.nextAction ?? 'Needs a clear owner and next action'}
         </p>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-slate-950/35 px-2.5 py-1 text-xs font-semibold text-slate-300">
@@ -252,7 +254,7 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         {project.savedLinks.map((link) =>
           link.url ? (
             <a
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-white/[0.025] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-cyan-300/30 hover:bg-cyan-300/[0.06] hover:text-white"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-1.5 text-xs font-medium text-slate-300 transition-all duration-200 hover:border-cyan-300/30 hover:bg-cyan-300/[0.06] hover:text-white"
               href={link.url}
               key={link.id}
               rel="noreferrer"
@@ -263,7 +265,7 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
             </a>
           ) : (
             <span
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.015] px-3 py-1.5 text-xs font-medium text-slate-500"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.015] px-3 py-1.5 text-xs font-medium text-slate-500"
               key={link.id}
             >
               {link.label}
